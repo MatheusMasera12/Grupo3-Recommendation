@@ -1,4 +1,6 @@
-import com.example.recommendation.dto.ResourceDTO;
+package com.example.recommendation.controller;
+
+import com.example.recommendation.dtos.ResourceDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;

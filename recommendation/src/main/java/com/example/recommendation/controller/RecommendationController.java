@@ -1,5 +1,7 @@
-import com.example.recommendation.dto.AssessmentTriggerDTO;
-import com.example.recommendation.dto.RecommendationDTO;
+package com.example.recommendation.controller;
+
+import com.example.recommendation.dtos.AssessmentTriggerDTO;
+import com.example.recommendation.dtos.RecommendationDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;

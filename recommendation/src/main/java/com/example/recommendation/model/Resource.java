@@ -1,3 +1,5 @@
+package com.example.recommendation.model;
+
 import jakarta.persistence.*;
 import lombok.*;
 

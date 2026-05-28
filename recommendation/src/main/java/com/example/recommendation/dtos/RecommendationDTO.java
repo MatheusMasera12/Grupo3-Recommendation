@@ -1,3 +1,6 @@
+package com.example.recommendation.dtos;
+
+import com.example.recommendation.dtos.ResourceDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
