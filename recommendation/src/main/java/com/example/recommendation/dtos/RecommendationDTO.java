@@ -7,7 +7,7 @@ public class RecommendationDTO {
     @Schema(description = "ID único da recomendação", accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
     
-    @Schema(description = "ID do usuário idoso")
+    @Schema(description = "ID do usuário")
     private Long userId;
     
     @Schema(description = "Recurso que foi recomendado")

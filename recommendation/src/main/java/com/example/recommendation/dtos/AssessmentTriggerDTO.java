@@ -3,7 +3,7 @@ import lombok.Data;
 
 @Data
 public class AssessmentTriggerDTO {
-    @Schema(description = "ID do usuário idoso")
+    @Schema(description = "ID do usuário")
     private Long userId;
     
     @Schema(description = "ID da competência")
