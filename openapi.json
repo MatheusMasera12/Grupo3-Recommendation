@@ -1,0 +1,335 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "OpenAPI definition",
+        "version": "v0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080",
+            "description": "Generated server url"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Catálogo de Recursos",
+            "description": "CRUD completo para gerenciamento dos recursos recomendáveis"
+        },
+        {
+            "name": "Recomendações",
+            "description": "Geração, consulta e remoção de recomendações"
+        }
+    ],
+    "paths": {
+        "/api/resources/{id}": {
+            "get": {
+                "tags": [
+                    "Catálogo de Recursos"
+                ],
+                "summary": "Buscar recurso por ID",
+                "description": "Retorna os detalhes de um recurso específico baseado no ID",
+                "operationId": "getResourceById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResourceDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Catálogo de Recursos"
+                ],
+                "summary": "Atualizar recurso",
+                "description": "Edita os dados de um recurso existente no catálogo",
+                "operationId": "updateResource",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResourceDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResourceDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Catálogo de Recursos"
+                ],
+                "summary": "Remover recurso",
+                "description": "Deleta um recurso específico do catálogo pelo ID",
+                "operationId": "deleteResource",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/resources": {
+            "get": {
+                "tags": [
+                    "Catálogo de Recursos"
+                ],
+                "summary": "Listar todos os recursos",
+                "description": "Retorna uma lista com todos os recursos cadastrados",
+                "operationId": "getAllResources",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ResourceDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Catálogo de Recursos"
+                ],
+                "summary": "Criar recurso",
+                "description": "Cadastra un novo recurso no catálogo",
+                "operationId": "createResource",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResourceDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResourceDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/recommendations/evaluate": {
+            "post": {
+                "tags": [
+                    "Recomendações"
+                ],
+                "summary": "Acionar recomendação",
+                "description": "Recebe dados do serviço de avaliação e gera uma recomendação",
+                "operationId": "generateRecommendation",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AssessmentTriggerDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/recommendations/user/{userId}": {
+            "get": {
+                "tags": [
+                    "Recomendações"
+                ],
+                "summary": "Listar por usuário",
+                "description": "Retorna todas as recomendações vinculadas a um ID de usuário",
+                "operationId": "getUserRecommendations",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/RecommendationDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/recommendations/{id}": {
+            "delete": {
+                "tags": [
+                    "Recomendações"
+                ],
+                "summary": "Remover recomendação",
+                "description": "Deleta uma recomendação específica pelo ID",
+                "operationId": "deleteRecommendation",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ResourceDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID único do recurso (Gerado automaticamente)",
+                        "format": "int64",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Nome do recurso"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Descrição do recurso"
+                    },
+                    "url": {
+                        "type": "string",
+                        "description": "Link para algum conteúdo"
+                    },
+                    "competencyId": {
+                        "type": "integer",
+                        "description": "ID da competência",
+                        "format": "int64"
+                    }
+                }
+            },
+            "AssessmentTriggerDTO": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "integer",
+                        "description": "ID do usuário",
+                        "format": "int64"
+                    },
+                    "competencyId": {
+                        "type": "integer",
+                        "description": "ID da competência",
+                        "format": "int64"
+                    }
+                }
+            },
+            "RecommendationDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID único da recomendação",
+                        "format": "int64",
+                        "readOnly": true
+                    },
+                    "userId": {
+                        "type": "integer",
+                        "description": "ID do usuário",
+                        "format": "int64"
+                    },
+                    "resource": {
+                        "$ref": "#/components/schemas/ResourceDTO"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Justificativa da recomendação"
+                    }
+                }
+            }
+        }
+    }
+}
