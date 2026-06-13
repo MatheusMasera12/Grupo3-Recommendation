@@ -9,3 +9,7 @@ import java.util.List;
 public interface ResourceRepository extends JpaRepository<Resource, Long> {
     List<Resource> findByCompetencyId(Long competencyId);
 }
+@Repository
+public interface RecommendationRepository extends JpaRepository<Recommendation, Long> {
+    List<Recommendation> findByUserId(Long userId);
+}
