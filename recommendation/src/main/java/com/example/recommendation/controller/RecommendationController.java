@@ -33,4 +33,32 @@ public class RecommendationController {
     public ResponseEntity<Void> deleteRecommendation(@PathVariable Long id) {
         return ResponseEntity.noContent().build();
     }
+        @RestController
+    @RequestMapping("/api/recommendations")
+    @Tag(name = "Recomendações", description = "Geração, consulta e remoção de recomendações")
+    public class RecommendationController {
+
+        private final RecommendationService recommendationService;
+
+        public RecommendationController(RecommendationService recommendationService) {
+            this.recommendationService = recommendationService;
+        }
+
+        @PostMapping("/evaluate")
+        public ResponseEntity<Void> generateRecommendation(@RequestBody AssessmentTriggerDTO trigger) {
+            recommendationService.generateRecommendation(trigger);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+
+        @GetMapping("/user/{userId}")
+        public ResponseEntity<List<RecommendationDTO>> getUserRecommendations(@PathVariable Long userId) {
+            return ResponseEntity.ok(recommendationService.getUserRecommendations(userId));
+        }
+
+        @DeleteMapping("/{id}")
+        public ResponseEntity<Void> deleteRecommendation(@PathVariable Long id) {
+            recommendationService.deleteRecommendation(id);
+            return ResponseEntity.noContent().build();
+        }
+    }
 }
