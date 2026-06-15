@@ -1,13 +1,25 @@
 package com.example.recommendation.client;
 
 import com.example.recommendation.dtos.UserProfileDTO;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClient;
 
-@FeignClient(name = "auth-service", url = "${auth.service.url}")
-public interface AuthServiceClient {
+@Component
+public class AuthServiceClient {
 
-    @GetMapping("/auth/users/{id}")
-    UserProfileDTO getUserProfile(@PathVariable("id") Long id);
+    private final RestClient restClient;
+
+    public AuthServiceClient(@Value("${auth.service.url}") String authServiceUrl) {
+        this.restClient = RestClient.builder()
+                .baseUrl(authServiceUrl)
+                .build();
+    }
+
+    public UserProfileDTO getUserProfile(Long id) {
+        return restClient.get()
+                .uri("/auth/users/{id}", id)
+                .retrieve()
+                .body(UserProfileDTO.class);
+    }
 }

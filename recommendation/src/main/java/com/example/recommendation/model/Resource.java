@@ -22,4 +22,6 @@ public class Resource{
 
     private Long competencyId;
 
+    @Enumerated(EnumType.STRING)
+    private ResourceLevel level;
 }
