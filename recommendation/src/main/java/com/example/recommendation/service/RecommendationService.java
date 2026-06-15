@@ -7,6 +7,9 @@ import com.example.recommendation.model.Recommendation;
 import com.example.recommendation.model.Resource;
 import com.example.recommendation.repository.RecommendationRepository;
 import com.example.recommendation.repository.ResourceRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,11 +27,12 @@ public class RecommendationService {
         this.resourceRepository = resourceRepository;
     }
 
+    @CacheEvict(value = "recommendations", key = "#trigger.userId + ':*'", allEntries = true)
     public void generateRecommendation(AssessmentTriggerDTO trigger) {
         List<Resource> resources = resourceRepository.findByCompetencyId(trigger.getCompetencyId());
 
         if (resources.isEmpty()) {
-            throw new RuntimeException("Nenhum recurso encontrado para a competência ID: " 
+            throw new RuntimeException("Nenhum recurso encontrado para a competência ID: "
                 + trigger.getCompetencyId());
         }
 
@@ -36,7 +40,7 @@ public class RecommendationService {
             Recommendation rec = new Recommendation();
             rec.setUserId(trigger.getUserId());
             rec.setResource(resource);
-            rec.setDescription("Recomendado com base na competência ID: " 
+            rec.setDescription("Recomendado com base na competência ID: "
                 + trigger.getCompetencyId());
             return rec;
         }).collect(Collectors.toList());
@@ -44,13 +48,15 @@ public class RecommendationService {
         recommendationRepository.saveAll(recommendations);
     }
 
-    public List<RecommendationDTO> getUserRecommendations(Long userId) {
-        return recommendationRepository.findByUserId(userId)
+    @Cacheable(value = "recommendations", key = "#userId + ':' + #pageable.pageNumber")
+    public List<RecommendationDTO> getUserRecommendations(Long userId, Pageable pageable) {
+        return recommendationRepository.findByUserId(userId, pageable)
                 .stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
 
+    @CacheEvict(value = "recommendations", allEntries = true)
     public void deleteRecommendation(Long id) {
         recommendationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Recomendação não encontrada com ID: " + id));

@@ -5,6 +5,8 @@ import com.example.recommendation.dtos.RecommendationDTO;
 import com.example.recommendation.service.RecommendationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +33,10 @@ public class RecommendationController {
 
     @GetMapping("/user/{userId}")
     @Operation(summary = "Listar por usuário", description = "Retorna todas as recomendações vinculadas a um ID de usuário")
-    public ResponseEntity<List<RecommendationDTO>> getUserRecommendations(@PathVariable Long userId) {
-        return ResponseEntity.ok(recommendationService.getUserRecommendations(userId));
+    public ResponseEntity<List<RecommendationDTO>> getUserRecommendations(
+            @PathVariable Long userId,
+            @PageableDefault(size = 20) Pageable pageable) {
+        return ResponseEntity.ok(recommendationService.getUserRecommendations(userId, pageable));
     }
 
     @DeleteMapping("/{id}")
