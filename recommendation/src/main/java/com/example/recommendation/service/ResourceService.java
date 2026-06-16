@@ -22,6 +22,7 @@ public class ResourceService {
         resource.setDescription(dto.getDescription());
         resource.setUrl(dto.getUrl());
         resource.setCompetencyId(dto.getCompetencyId());
+        resource.setLevel(dto.getLevel());
 
         Resource savedResource = resourceRepository.save(resource);
         dto.setId(savedResource.getId());
@@ -38,6 +39,7 @@ public class ResourceService {
             dto.setDescription(entity.getDescription());
             dto.setUrl(entity.getUrl());
             dto.setCompetencyId(entity.getCompetencyId());
+            dto.setLevel(entity.getLevel());
             return dto;
         }).collect(Collectors.toList());
     }
@@ -56,7 +58,8 @@ public class ResourceService {
         dto.setDescription(resource.getDescription());
         dto.setUrl(resource.getUrl());
         dto.setCompetencyId(resource.getCompetencyId());
-        
+        dto.setLevel(resource.getLevel());
+
         return dto;
     }
 
@@ -68,6 +71,7 @@ public class ResourceService {
         resource.setDescription(dto.getDescription());
         resource.setUrl(dto.getUrl());
         resource.setCompetencyId(dto.getCompetencyId());
+        resource.setLevel(dto.getLevel());
 
         Resource updatedResource = resourceRepository.save(resource);
 

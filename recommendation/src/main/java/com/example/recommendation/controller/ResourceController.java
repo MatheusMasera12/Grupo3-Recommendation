@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -24,7 +25,7 @@ public class ResourceController {
 
     @PostMapping
     @Operation(summary = "Criar recurso", description = "Cadastra un novo recurso no catálogo")
-    public ResponseEntity<ResourceDTO> createResource(@RequestBody ResourceDTO dto) {
+    public ResponseEntity<ResourceDTO> createResource(@Valid @RequestBody ResourceDTO dto) {
         ResourceDTO savedResource = resourceService.createResource(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedResource);
     }
@@ -45,7 +46,7 @@ public class ResourceController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar recurso", description = "Edita os dados de um recurso existente no catálogo")
-    public ResponseEntity<ResourceDTO> updateResource(@PathVariable Long id, @RequestBody ResourceDTO dto) {
+    public ResponseEntity<ResourceDTO> updateResource(@PathVariable Long id, @Valid @RequestBody ResourceDTO dto) {
         ResourceDTO updatedResource = resourceService.updateResource(id, dto);
         return ResponseEntity.ok(updatedResource);
     }

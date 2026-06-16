@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class RecommendationController {
         @ApiResponse(responseCode = "401", description = "Token inválido ou ausente"),
         @ApiResponse(responseCode = "404", description = "Competência sem recursos")
     })
-    public ResponseEntity<Void> generateRecommendation(@RequestBody AssessmentTriggerDTO trigger) {
+    public ResponseEntity<Void> generateRecommendation(@Valid @RequestBody AssessmentTriggerDTO trigger) {
         recommendationService.generateRecommendation(trigger);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

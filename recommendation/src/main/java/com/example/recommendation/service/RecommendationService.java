@@ -29,11 +29,12 @@ public class RecommendationService {
 
     @CacheEvict(value = "recommendations", key = "#trigger.userId + ':*'", allEntries = true)
     public void generateRecommendation(AssessmentTriggerDTO trigger) {
-        List<Resource> resources = resourceRepository.findByCompetencyId(trigger.getCompetencyId());
+        List<Resource> resources = resourceRepository.findByCompetencyIdAndLevel(
+                trigger.getCompetencyId(), trigger.getLevel());
 
         if (resources.isEmpty()) {
             throw new RuntimeException("Nenhum recurso encontrado para a competência ID: "
-                + trigger.getCompetencyId());
+                + trigger.getCompetencyId() + " e nível: " + trigger.getLevel());
         }
 
         List<Recommendation> recommendations = resources.stream().map(resource -> {
