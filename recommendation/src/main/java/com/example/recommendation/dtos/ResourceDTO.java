@@ -4,6 +4,8 @@ import com.example.recommendation.model.ResourceLevel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import jakarta.validation.constraints.NotNull;
+
 @Data
 public class ResourceDTO {
 
@@ -22,6 +24,7 @@ public class ResourceDTO {
     @Schema(description = "ID da competência associada", example = "1")
     private Long competencyId;
 
+    @NotNull
     @Schema(description = "Nível de dificuldade", example = "BEGINNER")
     private ResourceLevel level;
 }

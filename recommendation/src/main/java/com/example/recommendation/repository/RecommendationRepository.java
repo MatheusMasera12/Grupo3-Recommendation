@@ -7,8 +7,21 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.transaction.annotation.Transactional;
+
 @Repository
 public interface RecommendationRepository extends JpaRepository<Recommendation, Long> {
-    List<Recommendation> findByUserId(Long userId);
+    
+    @EntityGraph(attributePaths = {"resource"})
     List<Recommendation> findByUserId(Long userId, Pageable pageable);
+
+    List<Recommendation> findByResourceId(Long resourceId);
+
+    @Modifying
+    @Transactional
+    void deleteByResourceId(Long resourceId);
+
+    boolean existsByUserIdAndResourceId(Long userId, Long resourceId);
 }

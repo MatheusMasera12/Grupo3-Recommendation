@@ -23,5 +23,12 @@ public class Resource{
     private Long competencyId;
 
     @Enumerated(EnumType.STRING)
-    private ResourceLevel level;
+    private ResourceLevel level = ResourceLevel.BEGINNER;
+
+    @PostLoad
+    public void ensureLevel() {
+        if (this.level == null) {
+            this.level = ResourceLevel.BEGINNER;
+        }
+    }
 }

@@ -23,10 +23,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(body(HttpStatus.BAD_REQUEST, "Dados inválidos", errors));
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<Map<String, Object>> handleRuntime(RuntimeException ex) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleResourceNotFound(ResourceNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(body(HttpStatus.NOT_FOUND, ex.getMessage(), null));
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Map<String, Object>> handleRuntime(RuntimeException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(body(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null));
     }
 
     @ExceptionHandler(Exception.class)

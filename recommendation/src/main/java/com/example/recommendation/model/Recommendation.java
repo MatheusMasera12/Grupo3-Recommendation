@@ -4,7 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "tb_recommendations")
+@Table(
+    name = "tb_recommendations",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "resource_id"})
+    }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

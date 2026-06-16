@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface ResourceRepository extends JpaRepository<Resource, Long> {
-    List<Resource> findByCompetencyId(Long competencyId);
     List<Resource> findByCompetencyIdAndLevel(Long competencyId, ResourceLevel level);
 }
