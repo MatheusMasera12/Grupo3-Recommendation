@@ -19,21 +19,9 @@ public class CacheService {
         if (userId == null) {
             return;
         }
-        String pattern = "recommendations::" + userId + ":*";
-        try {
-            redisTemplate.execute((RedisConnection connection) -> {
-                try (Cursor<byte[]> cursor = connection.keyCommands().scan(
-                        ScanOptions.scanOptions().match(pattern).count(1000).build())) {
-                    while (cursor.hasNext()) {
-                        connection.keyCommands().del(cursor.next());
-                    }
-                } catch (Exception e) {
-                   
-                }
-                return null;
-            });
-        } catch (Exception e) {
-           
+        // Invalidação por chave direta para as páginas mais acessadas (0 a 9)
+        for (int i = 0; i < 10; i++) {
+            redisTemplate.delete("recommendations::" + userId + ":" + i);
         }
     }
 }
