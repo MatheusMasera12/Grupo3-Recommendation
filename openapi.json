@@ -1,13 +1,19 @@
 {
-    "openapi": "3.0.1",
+    "openapi": "3.1.0",
     "info": {
-        "title": "OpenAPI definition",
-        "version": "v0"
+        "title": "Recommendation API",
+        "description": "API de recomendações de recursos por competência",
+        "version": "1.0.0"
     },
     "servers": [
         {
             "url": "http://localhost:8080",
             "description": "Generated server url"
+        }
+    ],
+    "security": [
+        {
+            "bearerAuth": []
         }
     ],
     "tags": [
@@ -193,8 +199,17 @@
                     "required": true
                 },
                 "responses": {
-                    "200": {
-                        "description": "OK"
+                    "201": {
+                        "description": "Recomendações geradas"
+                    },
+                    "400": {
+                        "description": "Dados inválidos"
+                    },
+                    "401": {
+                        "description": "Token inválido ou ausente"
+                    },
+                    "404": {
+                        "description": "Competência sem recursos"
                     }
                 }
             }
@@ -216,11 +231,32 @@
                             "type": "integer",
                             "format": "int64"
                         }
+                    },
+                    {
+                        "name": "pageable",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/Pageable"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Lista de recomendações",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/RecommendationDTO"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Token inválido ou ausente",
                         "content": {
                             "*/*": {
                                 "schema": {
@@ -255,8 +291,14 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK"
+                    "204": {
+                        "description": "Removido com sucesso"
+                    },
+                    "401": {
+                        "description": "Token inválido ou ausente"
+                    },
+                    "404": {
+                        "description": "Recomendação não encontrada"
                     }
                 }
             }
@@ -269,41 +311,96 @@
                 "properties": {
                     "id": {
                         "type": "integer",
-                        "description": "ID único do recurso (Gerado automaticamente)",
                         "format": "int64",
+                        "description": "ID único do recurso (Gerado automaticamente)",
                         "readOnly": true
                     },
                     "name": {
                         "type": "string",
-                        "description": "Nome do recurso"
+                        "description": "Nome do recurso",
+                        "example": "Introdução ao Smartphone"
                     },
                     "description": {
                         "type": "string",
-                        "description": "Descrição do recurso"
+                        "description": "Descrição detalhada",
+                        "example": "Vídeo tutorial de 10 min para iniciantes"
                     },
                     "url": {
                         "type": "string",
-                        "description": "Link para algum conteúdo"
+                        "description": "Link de acesso ao recurso",
+                        "example": "https://youtube.com/..."
                     },
                     "competencyId": {
                         "type": "integer",
-                        "description": "ID da competência",
-                        "format": "int64"
+                        "format": "int64",
+                        "description": "ID da competência associada",
+                        "example": 1
+                    },
+                    "level": {
+                        "type": "string",
+                        "description": "Nível de dificuldade",
+                        "enum": [
+                            "BEGINNER",
+                            "INTERMEDIATE",
+                            "ADVANCED"
+                        ],
+                        "example": "BEGINNER"
                     }
-                }
+                },
+                "required": [
+                    "level"
+                ]
             },
             "AssessmentTriggerDTO": {
                 "type": "object",
                 "properties": {
                     "userId": {
                         "type": "integer",
-                        "description": "ID do usuário",
-                        "format": "int64"
+                        "format": "int64",
+                        "description": "ID do usuário avaliado",
+                        "example": 42
                     },
                     "competencyId": {
                         "type": "integer",
-                        "description": "ID da competência",
-                        "format": "int64"
+                        "format": "int64",
+                        "description": "ID da competência avaliada",
+                        "example": 3
+                    },
+                    "level": {
+                        "type": "string",
+                        "description": "Nível atingido pelo usuário",
+                        "enum": [
+                            "BEGINNER",
+                            "INTERMEDIATE",
+                            "ADVANCED"
+                        ],
+                        "example": "INTERMEDIATE"
+                    }
+                },
+                "required": [
+                    "competencyId",
+                    "level",
+                    "userId"
+                ]
+            },
+            "Pageable": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "size": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 1
+                    },
+                    "sort": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
                     }
                 }
             },
@@ -312,23 +409,31 @@
                 "properties": {
                     "id": {
                         "type": "integer",
-                        "description": "ID único da recomendação",
                         "format": "int64",
+                        "description": "ID único da recomendação",
                         "readOnly": true
                     },
                     "userId": {
                         "type": "integer",
-                        "description": "ID do usuário",
-                        "format": "int64"
+                        "format": "int64",
+                        "description": "ID do usuário"
                     },
                     "resource": {
-                        "$ref": "#/components/schemas/ResourceDTO"
+                        "$ref": "#/components/schemas/ResourceDTO",
+                        "description": "Recurso que foi recomendado"
                     },
                     "description": {
                         "type": "string",
                         "description": "Justificativa da recomendação"
                     }
                 }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
             }
         }
     }
