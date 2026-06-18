@@ -9,13 +9,15 @@ import com.example.recommendation.model.Resource;
 import com.example.recommendation.repository.RecommendationRepository;
 import com.example.recommendation.repository.ResourceRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -52,19 +54,24 @@ public class RecommendationService {
                 + trigger.getCompetencyId() + " e nível: " + trigger.getLevel());
         }
 
-        List<Recommendation> recommendations = new ArrayList<>();
-        for (Resource resource : resources) {
-            boolean exists = recommendationRepository.existsByUserIdAndResource_Id(
-                    trigger.getUserId(), resource.getId());
-            if (!exists) {
-                Recommendation rec = new Recommendation();
-                rec.setUserId(trigger.getUserId());
-                rec.setResource(resource);
-                rec.setDescription("Recomendado com base na competência ID: "
-                    + trigger.getCompetencyId());
-                recommendations.add(rec);
-            }
-        }
+        List<Long> resourceIds = resources.stream()
+                .map(Resource::getId)
+                .collect(Collectors.toList());
+
+        Set<Long> existingIds = new HashSet<>(
+                recommendationRepository.findExistingResourceIdsForUser(trigger.getUserId(), resourceIds));
+
+        List<Recommendation> recommendations = resources.stream()
+                .filter(r -> !existingIds.contains(r.getId()))
+                .map(resource -> {
+                    Recommendation rec = new Recommendation();
+                    rec.setUserId(trigger.getUserId());
+                    rec.setResource(resource);
+                    rec.setDescription("Recomendado com base na competência ID: "
+                        + trigger.getCompetencyId());
+                    return rec;
+                })
+                .collect(Collectors.toList());
 
         if (!recommendations.isEmpty()) {
             recommendationRepository.saveAll(recommendations);
@@ -81,23 +88,23 @@ public class RecommendationService {
                 trigger.getUserId(), duration);
     }
 
-    @Cacheable(value = "recommendations", key = "#userId + ':' + #pageable.pageNumber")
-    public List<RecommendationDTO> getUserRecommendations(Long userId, Pageable pageable) {
+    public Page<RecommendationDTO> getUserRecommendations(Long userId, Pageable pageable) {
         log.info("Buscando recomendações para o usuário ID: {}, página: {}", userId, pageable.getPageNumber());
-        return recommendationRepository.findByUserId(userId, pageable)
-                .stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+        return recommendationRepository.findByUserId(userId, pageable).map(this::toDTO);
     }
 
     @Transactional
-    public void deleteRecommendation(Long id) {
-        log.info("Iniciando exclusão da recomendação ID: {}", id);
+    public void deleteRecommendation(Long id, Long callerUserId, boolean isAdmin) {
+        log.info("Iniciando exclusão da recomendação ID: {} pelo usuário ID: {}", id, callerUserId);
         Recommendation rec = recommendationRepository.findById(id)
                 .orElseThrow(() -> {
                     log.warn("Recomendação ID: {} não encontrada para exclusão", id);
                     return new ResourceNotFoundException("Recomendação não encontrada com ID: " + id);
                 });
+        if (!isAdmin && !rec.getUserId().equals(callerUserId)) {
+            log.warn("Usuário ID: {} tentou deletar recomendação ID: {} de outro usuário", callerUserId, id);
+            throw new AccessDeniedException("Acesso negado");
+        }
         recommendationRepository.delete(rec);
         cacheService.evictUserCache(rec.getUserId());
         log.info("Recomendação ID: {} excluída e cache limpo para o usuário ID: {}", id, rec.getUserId());

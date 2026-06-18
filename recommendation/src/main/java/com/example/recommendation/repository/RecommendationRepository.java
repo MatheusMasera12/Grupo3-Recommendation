@@ -1,6 +1,7 @@
 package com.example.recommendation.repository;
 
 import com.example.recommendation.model.Recommendation;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -18,7 +19,7 @@ import org.springframework.data.repository.query.Param;
 public interface RecommendationRepository extends JpaRepository<Recommendation, Long> {
     
     @EntityGraph(attributePaths = {"resource"})
-    List<Recommendation> findByUserId(Long userId, Pageable pageable);
+    Page<Recommendation> findByUserId(Long userId, Pageable pageable);
 
     @Modifying
     @Transactional
@@ -28,4 +29,10 @@ public interface RecommendationRepository extends JpaRepository<Recommendation, 
 
     @Query("SELECT r.userId FROM Recommendation r WHERE r.resource.id = :resourceId")
     List<Long> findUserIdsByResourceId(@Param("resourceId") Long resourceId);
+
+    @Query("SELECT r.resource.id FROM Recommendation r WHERE r.userId = :userId AND r.resource.id IN :resourceIds")
+    List<Long> findExistingResourceIdsForUser(
+        @Param("userId") Long userId,
+        @Param("resourceIds") List<Long> resourceIds
+    );
 }

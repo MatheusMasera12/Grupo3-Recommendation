@@ -5,7 +5,8 @@ import lombok.*;
 
 @Entity
 @Table(name = "tb_resources")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Resource{
