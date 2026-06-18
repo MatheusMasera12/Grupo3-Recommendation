@@ -6,6 +6,10 @@ import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
+import java.util.Set;
+
 @Service
 public class CacheService {
 
@@ -19,9 +23,22 @@ public class CacheService {
         if (userId == null) {
             return;
         }
-        // Invalidação por chave direta para as páginas mais acessadas (0 a 9)
-        for (int i = 0; i < 10; i++) {
-            redisTemplate.delete("recommendations::" + userId + ":" + i);
+        String pattern = "recommendations::" + userId + ":*";
+        Set<String> keysToDelete = new HashSet<>();
+
+        redisTemplate.execute((RedisConnection connection) -> {
+            ScanOptions options = ScanOptions.scanOptions().match(pattern).count(100).build();
+            try (Cursor<byte[]> cursor = connection.scan(options)) {
+                cursor.forEachRemaining(key ->
+                    keysToDelete.add(new String(key, StandardCharsets.UTF_8)));
+            } catch (Exception e) {
+                throw new RuntimeException("Erro ao varrer chaves do cache Redis", e);
+            }
+            return null;
+        });
+
+        if (!keysToDelete.isEmpty()) {
+            redisTemplate.delete(keysToDelete);
         }
     }
 }

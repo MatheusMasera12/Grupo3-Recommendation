@@ -28,4 +28,10 @@ public interface RecommendationRepository extends JpaRepository<Recommendation, 
 
     @Query("SELECT r.userId FROM Recommendation r WHERE r.resource.id = :resourceId")
     List<Long> findUserIdsByResourceId(@Param("resourceId") Long resourceId);
+
+    @Query("SELECT r.resource.id FROM Recommendation r WHERE r.userId = :userId AND r.resource.id IN :resourceIds")
+    List<Long> findExistingResourceIdsForUser(
+        @Param("userId") Long userId,
+        @Param("resourceIds") List<Long> resourceIds
+    );
 }

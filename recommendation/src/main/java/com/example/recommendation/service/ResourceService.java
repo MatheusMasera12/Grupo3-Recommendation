@@ -6,11 +6,12 @@ import com.example.recommendation.model.Resource;
 import com.example.recommendation.repository.RecommendationRepository;
 import com.example.recommendation.repository.ResourceRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -45,20 +46,9 @@ public class ResourceService {
         return dto;
     }
 
-    public List<ResourceDTO> getAllResources() {
-        log.info("Buscando todos os recursos cadastrados");
-        List<Resource> resources = resourceRepository.findAll();
-
-        return resources.stream().map(entity -> {
-            ResourceDTO dto = new ResourceDTO();
-            dto.setId(entity.getId());
-            dto.setName(entity.getName());
-            dto.setDescription(entity.getDescription());
-            dto.setUrl(entity.getUrl());
-            dto.setCompetencyId(entity.getCompetencyId());
-            dto.setLevel(entity.getLevel());
-            return dto;
-        }).collect(Collectors.toList());
+    public Page<ResourceDTO> getAllResources(Pageable pageable) {
+        log.info("Buscando recursos cadastrados — página: {}, tamanho: {}", pageable.getPageNumber(), pageable.getPageSize());
+        return resourceRepository.findAll(pageable).map(this::toDTO);
     }
 
     @Transactional
@@ -85,21 +75,12 @@ public class ResourceService {
 
     public ResourceDTO getResourceById(Long id) {
         log.info("Buscando detalhes do recurso ID: {}", id);
-        Resource resource = resourceRepository.findById(id)
+        return resourceRepository.findById(id)
+                .map(this::toDTO)
                 .orElseThrow(() -> {
                     log.warn("Recurso ID: {} não encontrado", id);
                     return new ResourceNotFoundException("Recurso não encontrado com o ID: " + id);
                 });
-
-        ResourceDTO dto = new ResourceDTO();
-        dto.setId(resource.getId());
-        dto.setName(resource.getName());
-        dto.setDescription(resource.getDescription());
-        dto.setUrl(resource.getUrl());
-        dto.setCompetencyId(resource.getCompetencyId());
-        dto.setLevel(resource.getLevel());
-
-        return dto;
     }
 
     @Transactional
@@ -125,8 +106,17 @@ public class ResourceService {
             cacheService.evictUserCache(userId);
         }
 
-        dto.setId(updatedResource.getId());
-        log.info("Recurso ID: {} atualizado com sucesso", id);
+        return toDTO(updatedResource);
+    }
+
+    private ResourceDTO toDTO(Resource entity) {
+        ResourceDTO dto = new ResourceDTO();
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+        dto.setDescription(entity.getDescription());
+        dto.setUrl(entity.getUrl());
+        dto.setCompetencyId(entity.getCompetencyId());
+        dto.setLevel(entity.getLevel());
         return dto;
-    }    
+    }
 }

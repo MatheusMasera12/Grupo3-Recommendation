@@ -10,7 +10,8 @@ import lombok.*;
         @UniqueConstraint(columnNames = {"user_id", "resource_id"})
     }
 )
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Recommendation{
@@ -21,7 +22,7 @@ public class Recommendation{
 
     private Long userId;
 
-    @ManyToOne
+    @ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
     @JoinColumn(name = "resource_id")
     private Resource resource;
 
