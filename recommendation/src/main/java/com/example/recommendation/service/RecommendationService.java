@@ -9,7 +9,7 @@ import com.example.recommendation.model.Resource;
 import com.example.recommendation.repository.RecommendationRepository;
 import com.example.recommendation.repository.ResourceRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -88,13 +88,9 @@ public class RecommendationService {
                 trigger.getUserId(), duration);
     }
 
-    @Cacheable(value = "recommendations", key = "#userId + ':' + #pageable.pageNumber")
-    public List<RecommendationDTO> getUserRecommendations(Long userId, Pageable pageable) {
+    public Page<RecommendationDTO> getUserRecommendations(Long userId, Pageable pageable) {
         log.info("Buscando recomendações para o usuário ID: {}, página: {}", userId, pageable.getPageNumber());
-        return recommendationRepository.findByUserId(userId, pageable)
-                .stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+        return recommendationRepository.findByUserId(userId, pageable).map(this::toDTO);
     }
 
     @Transactional

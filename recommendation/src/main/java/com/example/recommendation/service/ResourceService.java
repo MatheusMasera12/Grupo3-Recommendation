@@ -41,9 +41,8 @@ public class ResourceService {
         resource.setLevel(dto.getLevel());
 
         Resource savedResource = resourceRepository.save(resource);
-        dto.setId(savedResource.getId());
         log.info("Recurso cadastrado com sucesso. ID gerado: {}", savedResource.getId());
-        return dto;
+        return toDTO(savedResource);
     }
 
     public Page<ResourceDTO> getAllResources(Pageable pageable) {

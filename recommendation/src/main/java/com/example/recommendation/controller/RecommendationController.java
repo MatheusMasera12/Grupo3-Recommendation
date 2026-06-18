@@ -2,12 +2,14 @@ package com.example.recommendation.controller;
 
 import com.example.recommendation.dtos.AssessmentTriggerDTO;
 import com.example.recommendation.dtos.RecommendationDTO;
+import com.example.recommendation.exception.InvalidTokenException;
 import com.example.recommendation.service.RecommendationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -49,11 +51,11 @@ public class RecommendationController {
         @ApiResponse(responseCode = "401", description = "Token inválido ou ausente"),
         @ApiResponse(responseCode = "403", description = "Sem permissão para consultar este usuário")
     })
-    public ResponseEntity<List<RecommendationDTO>> getUserRecommendations(
+    public ResponseEntity<Page<RecommendationDTO>> getUserRecommendations(
             @PathVariable Long userId,
             @PageableDefault(size = 20) Pageable pageable,
             @AuthenticationPrincipal Jwt jwt) {
-        Long callerUserId = Long.parseLong(jwt.getSubject());
+        Long callerUserId = extractUserId(jwt);
         boolean isAdmin = isAdmin(jwt);
         if (!isAdmin && !callerUserId.equals(userId)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -72,9 +74,17 @@ public class RecommendationController {
     public ResponseEntity<Void> deleteRecommendation(
             @PathVariable Long id,
             @AuthenticationPrincipal Jwt jwt) {
-        Long callerUserId = Long.parseLong(jwt.getSubject());
+        Long callerUserId = extractUserId(jwt);
         recommendationService.deleteRecommendation(id, callerUserId, isAdmin(jwt));
         return ResponseEntity.noContent().build();
+    }
+
+    private Long extractUserId(Jwt jwt) {
+        try {
+            return Long.parseLong(jwt.getSubject());
+        } catch (NumberFormatException e) {
+            throw new InvalidTokenException("Token inválido: subject não é um ID numérico");
+        }
     }
 
     private boolean isAdmin(Jwt jwt) {
