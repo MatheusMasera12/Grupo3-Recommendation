@@ -26,3 +26,17 @@ logs/
 .DS_Store
 Thumbs.db
 
+# Ignorando repositórios externos do Ministack
+chave-infra/
+chave-ms-auth/
+chave-mfe-auth/
+chave-shell/
+
+# Dependencies
+node_modules/
+
+
+# Logs
+*.log
+npm-debug.log*
+dist/*
