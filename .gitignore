@@ -27,10 +27,8 @@ logs/
 Thumbs.db
 
 # Ignorando repositórios externos do Ministack
-chave-infra/
 chave-ms-auth/
 chave-mfe-auth/
-chave-shell/
 
 # Dependencies
 node_modules/
@@ -40,3 +38,11 @@ node_modules/
 *.log
 npm-debug.log*
 dist/*
+
+# Arquivos de estado do Terraform
+*.tfstate
+*.tfstate.backup
+
+# Arquivos de lock e pastas do Terraform
+.terraform/
+.terraform.lock.hcl
