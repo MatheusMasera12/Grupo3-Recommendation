@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@org.springframework.context.annotation.Import(com.example.recommendation.config.SecurityConfig.class)
 @WebMvcTest(ResourceController.class)
 class ResourceControllerTest {
 
@@ -59,7 +60,7 @@ class ResourceControllerTest {
 
         mockMvc.perform(post("/api/resources")
                         .with(SecurityMockMvcRequestPostProcessors.jwt()
-                                .jwt(jwt -> jwt.subject("1").claim("role", List.of("ADMIN"))))
+                                .authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_ADMIN")).jwt(jwt -> jwt.subject("1")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(input)))
                 .andExpect(status().isCreated())
@@ -73,7 +74,7 @@ class ResourceControllerTest {
 
         mockMvc.perform(post("/api/resources")
                         .with(SecurityMockMvcRequestPostProcessors.jwt()
-                                .jwt(jwt -> jwt.subject("1").claim("role", List.of("USER"))))
+                                .authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_USER")).jwt(jwt -> jwt.subject("1")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(input)))
                 .andExpect(status().isForbidden());
@@ -86,7 +87,7 @@ class ResourceControllerTest {
 
         mockMvc.perform(post("/api/resources")
                         .with(SecurityMockMvcRequestPostProcessors.jwt()
-                                .jwt(jwt -> jwt.subject("1").claim("role", List.of("ADMIN"))))
+                                .authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_ADMIN")).jwt(jwt -> jwt.subject("1")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(input)))
                 .andExpect(status().isBadRequest());
@@ -99,7 +100,7 @@ class ResourceControllerTest {
 
         mockMvc.perform(get("/api/resources")
                         .with(SecurityMockMvcRequestPostProcessors.jwt()
-                                .jwt(jwt -> jwt.subject("1").claim("role", List.of("USER")))))
+                                .authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_USER")).jwt(jwt -> jwt.subject("1"))))
                 .andExpect(status().isOk());
     }
 
@@ -111,7 +112,7 @@ class ResourceControllerTest {
 
         mockMvc.perform(get("/api/resources/1")
                         .with(SecurityMockMvcRequestPostProcessors.jwt()
-                                .jwt(jwt -> jwt.subject("1").claim("role", List.of("USER")))))
+                                .authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_USER")).jwt(jwt -> jwt.subject("1"))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L));
     }
@@ -123,7 +124,7 @@ class ResourceControllerTest {
 
         mockMvc.perform(get("/api/resources/99")
                         .with(SecurityMockMvcRequestPostProcessors.jwt()
-                                .jwt(jwt -> jwt.subject("1").claim("role", List.of("USER")))))
+                                .authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_USER")).jwt(jwt -> jwt.subject("1"))))
                 .andExpect(status().isNotFound());
     }
 
@@ -137,7 +138,7 @@ class ResourceControllerTest {
 
         mockMvc.perform(put("/api/resources/1")
                         .with(SecurityMockMvcRequestPostProcessors.jwt()
-                                .jwt(jwt -> jwt.subject("1").claim("role", List.of("ADMIN"))))
+                                .authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_ADMIN")).jwt(jwt -> jwt.subject("1")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(input)))
                 .andExpect(status().isOk())
@@ -150,7 +151,7 @@ class ResourceControllerTest {
 
         mockMvc.perform(put("/api/resources/1")
                         .with(SecurityMockMvcRequestPostProcessors.jwt()
-                                .jwt(jwt -> jwt.subject("1").claim("role", List.of("USER"))))
+                                .authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_USER")).jwt(jwt -> jwt.subject("1")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(input)))
                 .andExpect(status().isForbidden());
@@ -160,7 +161,7 @@ class ResourceControllerTest {
     void deleteResource_deveRetornar204_quandoAdmin() throws Exception {
         mockMvc.perform(delete("/api/resources/1")
                         .with(SecurityMockMvcRequestPostProcessors.jwt()
-                                .jwt(jwt -> jwt.subject("1").claim("role", List.of("ADMIN")))))
+                                .authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_ADMIN")).jwt(jwt -> jwt.subject("1"))))
                 .andExpect(status().isNoContent());
     }
 
@@ -168,7 +169,7 @@ class ResourceControllerTest {
     void deleteResource_deveRetornar403_quandoUsuarioComum() throws Exception {
         mockMvc.perform(delete("/api/resources/1")
                         .with(SecurityMockMvcRequestPostProcessors.jwt()
-                                .jwt(jwt -> jwt.subject("1").claim("role", List.of("USER")))))
+                                .authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_USER")).jwt(jwt -> jwt.subject("1"))))
                 .andExpect(status().isForbidden());
     }
 }

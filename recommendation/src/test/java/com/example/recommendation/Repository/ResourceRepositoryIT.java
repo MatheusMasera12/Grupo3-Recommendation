@@ -4,7 +4,7 @@ import com.example.recommendation.integration.AbstractIntegrationTest;
 import com.example.recommendation.model.Resource;
 import com.example.recommendation.model.ResourceLevel;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;

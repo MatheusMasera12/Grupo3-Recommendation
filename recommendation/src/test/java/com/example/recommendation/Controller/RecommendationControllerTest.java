@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@org.springframework.context.annotation.Import(com.example.recommendation.config.SecurityConfig.class)
 @WebMvcTest(RecommendationController.class)
 class RecommendationControllerTest {
 
@@ -48,7 +49,7 @@ class RecommendationControllerTest {
 
         mockMvc.perform(post("/api/recommendations/evaluate")
                         .with(SecurityMockMvcRequestPostProcessors.jwt()
-                                .jwt(jwt -> jwt.subject("1").claim("role", List.of("ADMIN"))))
+                                .authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_ADMIN")).jwt(jwt -> jwt.subject("1").claim("role", java.util.List.of("ADMIN"))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(trigger)))
                 .andExpect(status().isCreated());
@@ -62,7 +63,7 @@ class RecommendationControllerTest {
 
         mockMvc.perform(post("/api/recommendations/evaluate")
                         .with(SecurityMockMvcRequestPostProcessors.jwt()
-                                .jwt(jwt -> jwt.subject("1").claim("role", List.of("ADMIN"))))
+                                .authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_ADMIN")).jwt(jwt -> jwt.subject("1").claim("role", java.util.List.of("ADMIN"))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(trigger)))
                 .andExpect(status().isBadRequest());
@@ -75,7 +76,7 @@ class RecommendationControllerTest {
 
         mockMvc.perform(get("/api/recommendations/user/1")
                         .with(SecurityMockMvcRequestPostProcessors.jwt()
-                                .jwt(jwt -> jwt.subject("1").claim("role", List.of("USER")))))
+                                .authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_USER")).jwt(jwt -> jwt.subject("1").claim("role", java.util.List.of("USER")))))
                 .andExpect(status().isOk());
     }
 
@@ -83,7 +84,7 @@ class RecommendationControllerTest {
     void getUserRecommendations_deveRetornar403_quandoUsuarioComumConsultaIdDeOutroUsuario() throws Exception {
         mockMvc.perform(get("/api/recommendations/user/2")
                         .with(SecurityMockMvcRequestPostProcessors.jwt()
-                                .jwt(jwt -> jwt.subject("1").claim("role", List.of("USER")))))
+                                .authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_USER")).jwt(jwt -> jwt.subject("1").claim("role", java.util.List.of("USER")))))
                 .andExpect(status().isForbidden());
 
         verify(recommendationService, never()).getUserRecommendations(anyLong(), any());
@@ -96,7 +97,7 @@ class RecommendationControllerTest {
 
         mockMvc.perform(get("/api/recommendations/user/2")
                         .with(SecurityMockMvcRequestPostProcessors.jwt()
-                                .jwt(jwt -> jwt.subject("1").claim("role", List.of("ADMIN")))))
+                                .authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_ADMIN")).jwt(jwt -> jwt.subject("1").claim("role", java.util.List.of("ADMIN")))))
                 .andExpect(status().isOk());
     }
 
@@ -104,7 +105,7 @@ class RecommendationControllerTest {
     void deleteRecommendation_deveRetornar204_quandoSucesso() throws Exception {
         mockMvc.perform(delete("/api/recommendations/5")
                         .with(SecurityMockMvcRequestPostProcessors.jwt()
-                                .jwt(jwt -> jwt.subject("1").claim("role", List.of("USER")))))
+                                .authorities(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_USER")).jwt(jwt -> jwt.subject("1").claim("role", java.util.List.of("USER")))))
                 .andExpect(status().isNoContent());
 
         verify(recommendationService).deleteRecommendation(5L, 1L, false);
