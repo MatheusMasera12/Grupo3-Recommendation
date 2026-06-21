@@ -26,3 +26,23 @@ logs/
 .DS_Store
 Thumbs.db
 
+# Ignorando repositórios externos do Ministack
+chave-ms-auth/
+chave-mfe-auth/
+
+# Dependencies
+node_modules/
+
+
+# Logs
+*.log
+npm-debug.log*
+dist/*
+
+# Arquivos de estado do Terraform
+*.tfstate
+*.tfstate.backup
+
+# Arquivos de lock e pastas do Terraform
+.terraform/
+.terraform.lock.hcl

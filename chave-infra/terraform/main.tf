@@ -178,3 +178,19 @@ resource "aws_api_gateway_deployment" "chave" {
 output "gateway_url" {
   value = "${var.endpoint}/restapis/${aws_api_gateway_rest_api.chave.id}/v1/_user_request_"
 }
+
+# ─── RDS - Recommendation ───────────────────────────────────────────────────────
+
+resource "aws_db_instance" "recommendation" {
+  identifier          = "chave-recommendation-db"
+  engine              = "postgres"
+  engine_version      = "15.3"
+  instance_class      = "db.t3.micro"
+  username            = var.db_user
+  password            = var.db_password
+  db_name             = "chave_recommendation" # Nome do banco exclusivo
+  allocated_storage   = 20
+  multi_az            = false
+  publicly_accessible = false
+  skip_final_snapshot = true
+}
