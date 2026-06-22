@@ -1,0 +1,168 @@
+name: CI/CD — Recommendation MS + MFE
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  JAVA_VERSION: '21'
+  NODE_VERSION: '20'
+  REGISTRY: docker.io
+  MS_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/recommendation-ms
+  MFE_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/recommendation-mfe
+
+jobs:
+  # ─────────────────────────────────────────────
+  # JOB 1: Testes + Build do Microsserviço Java
+  # ─────────────────────────────────────────────
+  ms-test-build:
+    name: MS — Testes e Build
+    runs-on: ubuntu-latest
+
+    services:
+      docker:
+        image: docker:dind
+        options: --privileged
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Java ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+          cache: maven
+
+      - name: Executar testes unitários e de integração
+        working-directory: recommendation
+        run: bash ./mvnw verify -B --no-transfer-progress
+
+      - name: Upload relatório de testes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ms-test-results
+          path: recommendation/target/surefire-reports/
+          retention-days: 7
+
+      - name: Build da imagem Docker do MS
+        if: github.ref == 'refs/heads/main'
+        working-directory: recommendation
+        run: docker build -t ${{ env.MS_IMAGE }}:${{ github.sha }} -t ${{ env.MS_IMAGE }}:latest .
+
+      - name: Login no Docker Hub
+        if: github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Push da imagem do MS para Docker Hub
+        if: github.ref == 'refs/heads/main'
+        run: |
+          docker push ${{ env.MS_IMAGE }}:${{ github.sha }}
+          docker push ${{ env.MS_IMAGE }}:latest
+
+  # ─────────────────────────────────────────────
+  # JOB 2: Testes + Build do Microfrontend
+  # ─────────────────────────────────────────────
+  mfe-test-build:
+    name: MFE — Testes e Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: recommendation-mfe/package-lock.json
+
+      - name: Instalar dependências do MFE
+        working-directory: recommendation-mfe
+        run: npm ci --no-audit
+
+      - name: Verificação de tipos TypeScript
+        working-directory: recommendation-mfe
+        run: npx tsc --noEmit
+
+      - name: Lint
+        working-directory: recommendation-mfe
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Executar testes unitários do MFE
+        working-directory: recommendation-mfe
+        run: npm run test
+
+      - name: Build de produção (Module Federation)
+        working-directory: recommendation-mfe
+        run: npm run build
+
+      - name: Upload do artefato de build
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: mfe-dist
+          path: recommendation-mfe/dist/
+          retention-days: 7
+
+      - name: Build da imagem Docker do MFE
+        if: github.ref == 'refs/heads/main'
+        working-directory: recommendation-mfe
+        run: docker build -t ${{ env.MFE_IMAGE }}:${{ github.sha }} -t ${{ env.MFE_IMAGE }}:latest .
+
+      - name: Login no Docker Hub
+        if: github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Push da imagem do MFE para Docker Hub
+        if: github.ref == 'refs/heads/main'
+        run: |
+          docker push ${{ env.MFE_IMAGE }}:${{ github.sha }}
+          docker push ${{ env.MFE_IMAGE }}:latest
+
+  # ─────────────────────────────────────────────
+  # JOB 3: Publicação no NPM (componentes)
+  # ─────────────────────────────────────────────
+  mfe-publish-npm:
+    name: MFE — Publicar pacote no NPM
+    runs-on: ubuntu-latest
+    needs: mfe-test-build
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js com registry NPM
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: https://registry.npmjs.org
+          cache: npm
+          cache-dependency-path: recommendation-mfe/package-lock.json
+
+      - name: Instalar dependências
+        working-directory: recommendation-mfe
+        run: npm ci
+
+      - name: Build dos tipos (dist-types)
+        working-directory: recommendation-mfe
+        run: npx tsc --declaration --emitDeclarationOnly --outDir dist-types || true
+
+      - name: Publicar no NPM (skip se versão já existe)
+        working-directory: recommendation-mfe
+        run: npm publish --access public || echo "Versão já publicada, pulando."
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

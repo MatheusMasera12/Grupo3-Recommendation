@@ -1,7 +1,7 @@
 ---
 title: "Escolha de Versão, Resiliência de Cache e Idempotência no Microsserviço de Recomendação"
 date: 2026-06-21
-status: Proposto
+status: Aceito
 authors: ["Equipe de Desenvolvimento - Recommendation"]
 ---
 
@@ -9,7 +9,7 @@ authors: ["Equipe de Desenvolvimento - Recommendation"]
 
 ## Status
 
-Proposto
+Aceito
 
 ## Contexto
 
