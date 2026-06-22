@@ -18,11 +18,11 @@ export const theme = createTheme({
     h5: { fontWeight: 700, fontSize: '1.375rem', letterSpacing: '-0.01em', lineHeight: 1.35 },
     h6: { fontWeight: 600, fontSize: '1.125rem', lineHeight: 1.4 },
     subtitle1: { fontWeight: 600, fontSize: '1rem', lineHeight: 1.5 },
-    subtitle2: { fontWeight: 600, fontSize: '0.9375rem', lineHeight: 1.5 },
+    subtitle2: { fontWeight: 600, fontSize: '1rem', lineHeight: 1.5 },
     body1: { fontSize: '1rem', lineHeight: 1.7 },
-    body2: { fontSize: '0.9375rem', lineHeight: 1.65 },
-    caption: { fontSize: '0.875rem', lineHeight: 1.5 },
-    button: { fontWeight: 600, fontSize: '0.9375rem', letterSpacing: '0.01em', textTransform: 'none' },
+    body2: { fontSize: '1rem', lineHeight: 1.65 },
+    caption: { fontSize: '0.9375rem', lineHeight: 1.5 },
+    button: { fontWeight: 600, fontSize: '1rem', letterSpacing: '0.01em', textTransform: 'none' },
   },
   shape: { borderRadius: 10 },
   components: {
@@ -35,10 +35,10 @@ export const theme = createTheme({
           minHeight: 48,
           paddingLeft: 20,
           paddingRight: 20,
-          fontSize: '0.9375rem',
+          fontSize: '1rem',
         },
         sizeLarge: { minHeight: 56, paddingLeft: 28, paddingRight: 28 },
-        sizeSmall: { minHeight: 36 },
+        sizeSmall: { minHeight: 44 },
         contained: { boxShadow: '0 1px 3px rgba(0,0,0,0.18)' },
       },
       defaultProps: { disableElevation: false },
@@ -54,8 +54,8 @@ export const theme = createTheme({
     },
     MuiChip: {
       styleOverrides: {
-        root: { borderRadius: 6, fontWeight: 600, fontSize: '0.8125rem' },
-        sizeSmall: { height: 26 },
+        root: { borderRadius: 6, fontWeight: 600, fontSize: '0.9375rem' },
+        sizeSmall: { height: 36, fontSize: '0.875rem' },
       },
     },
     MuiTextField: { defaultProps: { variant: 'outlined' } },
@@ -70,8 +70,8 @@ export const theme = createTheme({
     },
     MuiTableCell: {
       styleOverrides: {
-        root: { borderBottom: '1px solid rgba(0,0,0,0.08)', padding: '14px 16px', fontSize: '0.9375rem' },
-        head: { fontWeight: 700, fontSize: '0.8125rem', color: '#4a5568', textTransform: 'uppercase', letterSpacing: '0.06em', padding: '12px 16px' },
+        root: { borderBottom: '1px solid rgba(0,0,0,0.08)', padding: '14px 16px', fontSize: '1rem' },
+        head: { fontWeight: 700, fontSize: '0.875rem', color: '#4a5568', textTransform: 'uppercase', letterSpacing: '0.06em', padding: '14px 16px' },
       },
     },
     MuiTableRow: {
@@ -89,13 +89,13 @@ export const theme = createTheme({
       styleOverrides: { root: { fontSize: '1.25rem', fontWeight: 700 } },
     },
     MuiAlert: {
-      styleOverrides: { root: { fontSize: '0.9375rem', borderRadius: 8 } },
+      styleOverrides: { root: { fontSize: '1rem', borderRadius: 8 } },
     },
     MuiListItemButton: {
       styleOverrides: { root: { borderRadius: 8, minHeight: 48 } },
     },
     MuiTooltip: {
-      styleOverrides: { tooltip: { fontSize: '0.875rem' } },
+      styleOverrides: { tooltip: { fontSize: '0.9375rem' } },
     },
     MuiTablePagination: {
       styleOverrides: { select: { fontSize: '0.9375rem' } },

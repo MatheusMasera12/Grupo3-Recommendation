@@ -346,7 +346,7 @@ export function ResourceList({
       {/* Feedback snackbar */}
       <Snackbar
         open={snack.open}
-        autoHideDuration={5000}
+        autoHideDuration={8000}
         onClose={() => setSnack((s) => ({ ...s, open: false }))}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >

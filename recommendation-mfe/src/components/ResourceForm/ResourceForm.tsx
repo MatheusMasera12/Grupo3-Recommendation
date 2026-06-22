@@ -196,19 +196,30 @@ export function ResourceForm({ open, onClose, onSubmit, resource }: ResourceForm
             />
 
             <Box>
-              <TextField
-                label="Etiquetas (opcional)"
-                fullWidth
-                value={tagInput}
-                onChange={(e) => setTagInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault()
-                    handleAddTag()
-                  }
-                }}
-                helperText="Pressione Enter para adicionar uma etiqueta. Ex: saúde, tecnologia, culinária"
-              />
+              <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-start' }}>
+                <TextField
+                  label="Etiquetas (opcional)"
+                  sx={{ flex: 1 }}
+                  value={tagInput}
+                  onChange={(e) => setTagInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault()
+                      handleAddTag()
+                    }
+                  }}
+                  helperText="Ex: saúde, tecnologia, culinária"
+                />
+                <Button
+                  variant="outlined"
+                  onClick={handleAddTag}
+                  disabled={!tagInput.trim()}
+                  sx={{ mt: '4px', whiteSpace: 'nowrap', flexShrink: 0 }}
+                  aria-label="Adicionar etiqueta"
+                >
+                  + Adicionar
+                </Button>
+              </Box>
               {(form.tags?.length ?? 0) > 0 && (
                 <Stack direction="row" flexWrap="wrap" gap={0.75} sx={{ mt: 1.5 }}>
                   {form.tags?.map((tag) => (
