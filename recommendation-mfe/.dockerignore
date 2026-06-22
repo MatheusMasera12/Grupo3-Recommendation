@@ -1,0 +1,8 @@
+node_modules
+dist
+dist-types
+ds-bundle
+.ds-sync
+.design-sync
+.git
+.ai_log

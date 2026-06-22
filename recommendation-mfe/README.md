@@ -11,34 +11,110 @@ Este sistema ajuda **pessoas idosas** a avaliar suas próprias competências e r
 - Acompanha a evolução do usuário ao longo do tempo
 - É projetado com foco em **acessibilidade, clareza e simplicidade**
 
-## Pré-requisitos
+---
 
-- Node.js 18 ou superior
-- npm 9 ou superior
+## Rodando o projeto completo
 
-## Instalação
+O sistema é composto por vários serviços. Para rodar tudo junto:
+
+### Pré-requisitos
+
+- [Docker](https://docs.docker.com/get-docker/) e Docker Compose
+- Node.js 18+ e npm 9+ (apenas para o MFE em modo dev)
+
+### 1. Subir toda a infraestrutura com Docker
 
 ```bash
-npm install
+cd chave-infra
+docker compose up -d --build
 ```
 
-## Rodando localmente
+Isso inicia os seguintes serviços:
+
+| Serviço | URL | Descrição |
+|---------|-----|-----------|
+| `ministack` | `localhost:4566` | LocalStack (AWS local: S3, RDS, API Gateway) |
+| `chave-ms-auth` | `localhost:3001` | Microsserviço de autenticação (Node.js) |
+| `chave-mfe-auth` | `localhost:4001` | MFE de login/autenticação |
+| `chave-shell` | `localhost:3000` | Shell principal — **ponto de entrada da aplicação** |
+| `chave-ms-recommendation` | `localhost:8080` | Backend de recomendações (Spring Boot + PostgreSQL) |
+
+> O `infra-provisioner` roda automaticamente e pode levar ~1 min para provisionar o banco e os recursos AWS locais. Aguarde o status `Exited (0)` antes de acessar a aplicação.
+
+### 2. Verificar se os serviços subiram
 
 ```bash
+cd chave-infra
+docker compose ps
+```
+
+Todos os containers devem estar com status `running` (exceto `infra-provisioner` que deve mostrar `Exited (0)`).
+
+### 3. Rodar o MFE de recomendações em modo dev
+
+Abra um novo terminal:
+
+```bash
+cd recommendation-mfe
+npm install
 npm run dev
 ```
 
-Acesse em: `http://localhost:5173`
+Acesse em: **`http://localhost:5173`**
+
+O MFE conecta automaticamente ao backend em `http://localhost:8080`.
+
+### 4. Acessar a aplicação completa
+
+Após tudo subir, acesse o **shell principal** em:
+
+**`http://localhost:3000`**
+
+### 5. Parar tudo
+
+```bash
+cd chave-infra
+docker compose down
+```
+
+---
+
+## Rodando apenas o Recommendation MFE + backend (modo simplificado)
+
+Se quiser rodar só o domínio de recomendações sem a infraestrutura completa:
+
+```bash
+# Terminal 1 — banco de dados PostgreSQL
+cd recommendation
+docker compose up -d
+
+# Terminal 2 — backend Spring Boot
+cd recommendation
+./mvnw spring-boot:run
+
+# Terminal 3 — frontend MFE
+cd recommendation-mfe
+npm install
+npm run dev
+```
+
+| Serviço | URL |
+|---------|-----|
+| Backend | `http://localhost:8080` |
+| MFE | `http://localhost:5173` |
+
+---
 
 ## Build de produção
 
 ```bash
+cd recommendation-mfe
 npm run build
 ```
 
 O resultado é gerado em `dist/`.
 
-## Rodando os testes
+## Verificação de tipos e lint
 
 ```bash
 # Verificação de tipos TypeScript
@@ -46,36 +122,40 @@ npx tsc --noEmit
 
 # Linting
 npm run lint
-
-# Gerar declarações de tipo (para o design-sync)
-npx tsc -p tsconfig.dts.json
 ```
+
+---
 
 ## Estrutura do projeto
 
 ```
-src/
-├── components/          # Componentes da biblioteca de design
-│   ├── Button/          # Botão com estado de carregamento acessível
-│   ├── Card/            # Card genérico com título, subtítulo e ações
-│   ├── DesignSystemProvider/  # Provedor de tema MUI
-│   ├── Input/           # Campo de texto acessível
-│   ├── Navbar/          # Barra de navegação superior
-│   ├── RecommendationCard/    # Card de recomendação com score de compatibilidade
-│   ├── ResourceForm/    # Formulário para criar/editar materiais
-│   ├── ResourceList/    # Lista de materiais com busca e paginação
-│   ├── SearchBar/       # Campo de busca com debounce
-│   ├── Sidebar/         # Menu lateral com navegação
-│   └── UserProfileCard/ # Card de perfil do usuário
-├── hooks/               # Hooks customizados
-├── pages/               # Páginas da aplicação
-├── routes/              # Configuração de rotas
-├── services/            # Chamadas à API REST
-├── types/               # Tipos TypeScript do domínio
-│   ├── resource.ts      # Resource, CreateResourceDto, labels PT-BR
-│   └── recommendation.ts  # Recommendation com score de compatibilidade
-├── theme.ts             # Configuração do tema Material UI
-└── index.ts             # Ponto de exportação da biblioteca de componentes
+Grupo3-Recommendation/
+├── chave-infra/             # Docker Compose + Terraform (infraestrutura completa)
+├── chave-shell/             # Shell MFE — ponto de entrada (porta 3000)
+├── chave-mfe-auth/          # MFE de autenticação (porta 4001)
+├── chave-ms-auth/           # Microsserviço de autenticação Node.js (porta 3001)
+├── recommendation/          # Backend Spring Boot — domínio de recomendações (porta 8080)
+└── recommendation-mfe/      # Este projeto — MFE de recomendações (porta 5173 dev)
+    └── src/
+        ├── components/      # Componentes da biblioteca de design
+        │   ├── Button/
+        │   ├── Card/
+        │   ├── DesignSystemProvider/
+        │   ├── Input/
+        │   ├── Navbar/
+        │   ├── RecommendationCard/
+        │   ├── ResourceForm/
+        │   ├── ResourceList/
+        │   ├── SearchBar/
+        │   ├── Sidebar/
+        │   └── UserProfileCard/
+        ├── hooks/           # Hooks customizados (useRecommendations, useResources)
+        ├── pages/           # Páginas (RecommendationView, ResourcePage)
+        ├── routes/          # Configuração de rotas
+        ├── services/        # Chamadas à API REST (axios)
+        ├── types/           # Tipos TypeScript do domínio
+        ├── theme.ts         # Tema Material UI (WCAG AA)
+        └── index.ts         # Exportações da biblioteca de componentes
 ```
 
 ## Componentes principais

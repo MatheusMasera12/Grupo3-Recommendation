@@ -3606,5 +3606,104 @@
     },
     "role": "assistant",
     "content": "`@Data` substituído por `@Getter` + `@Setter` nas duas entidades. O import `lombok.*` já cobre os novos annotations, então nenhuma alteração de import é necessária. `equals()`, `hashCode()` e `toString()` não serão mais gerados automaticamente pelo Lombok, evitando os problemas clássicos com relacionamentos lazy do JPA."
+  },
+  {
+    "timestamp": "2026-06-18T04:36:57.254Z",
+    "source": "claude",
+    "git_branch": "main",
+    "git_user_name": "RafaelReis22",
+    "call_context": {
+      "cwd": "c:\\Users\\rafae\\Downloads\\Grupo3-Recommendation"
+    },
+    "role": "user",
+    "content": "Ajuste dos Models (Lombok)\nAlterar Recommendation.java e Resource.java.\nRemover @Data.\nAdicionar @Getter e @Setter.\nObjetivo: evitar problemas de equals(), hashCode() e toString() em entidades JPA com relacionamentos."
+  },
+  {
+    "timestamp": "2026-06-18T04:37:00.930Z",
+    "source": "claude",
+    "git_branch": "main",
+    "git_user_name": "RafaelReis22",
+    "call_context": {
+      "cwd": "c:\\Users\\rafae\\Downloads\\Grupo3-Recommendation"
+    },
+    "role": "assistant",
+    "content": "Let me locate the entity files."
+  },
+  {
+    "timestamp": "2026-06-18T04:37:17.390Z",
+    "source": "claude",
+    "git_branch": "main",
+    "git_user_name": "RafaelReis22",
+    "call_context": {
+      "cwd": "c:\\Users\\rafae\\Downloads\\Grupo3-Recommendation"
+    },
+    "role": "assistant",
+    "content": "`@Data` substituído por `@Getter` + `@Setter` nas duas entidades. O import `lombok.*` já cobre os novos annotations, então nenhuma alteração de import é necessária. `equals()`, `hashCode()` e `toString()` não serão mais gerados automaticamente pelo Lombok, evitando os problemas clássicos com relacionamentos lazy do JPA."
+  },
+  {
+    "timestamp": "2026-06-18T04:36:57.254Z",
+    "source": "claude",
+    "git_branch": "main",
+    "git_user_name": "RafaelReis22",
+    "call_context": {
+      "cwd": "c:\\Users\\rafae\\Downloads\\Grupo3-Recommendation"
+    },
+    "role": "user",
+    "content": "Ajuste dos Models (Lombok)\nAlterar Recommendation.java e Resource.java.\nRemover @Data.\nAdicionar @Getter e @Setter.\nObjetivo: evitar problemas de equals(), hashCode() e toString() em entidades JPA com relacionamentos."
+  },
+  {
+    "timestamp": "2026-06-18T04:37:00.930Z",
+    "source": "claude",
+    "git_branch": "main",
+    "git_user_name": "RafaelReis22",
+    "call_context": {
+      "cwd": "c:\\Users\\rafae\\Downloads\\Grupo3-Recommendation"
+    },
+    "role": "assistant",
+    "content": "Let me locate the entity files."
+  },
+  {
+    "timestamp": "2026-06-18T04:37:17.390Z",
+    "source": "claude",
+    "git_branch": "main",
+    "git_user_name": "RafaelReis22",
+    "call_context": {
+      "cwd": "c:\\Users\\rafae\\Downloads\\Grupo3-Recommendation"
+    },
+    "role": "assistant",
+    "content": "`@Data` substituído por `@Getter` + `@Setter` nas duas entidades. O import `lombok.*` já cobre os novos annotations, então nenhuma alteração de import é necessária. `equals()`, `hashCode()` e `toString()` não serão mais gerados automaticamente pelo Lombok, evitando os problemas clássicos com relacionamentos lazy do JPA."
+  },
+  {
+    "timestamp": "2026-06-18T04:36:57.254Z",
+    "source": "claude",
+    "git_branch": "main",
+    "git_user_name": "RafaelReis22",
+    "call_context": {
+      "cwd": "c:\\Users\\rafae\\Downloads\\Grupo3-Recommendation"
+    },
+    "role": "user",
+    "content": "Ajuste dos Models (Lombok)\nAlterar Recommendation.java e Resource.java.\nRemover @Data.\nAdicionar @Getter e @Setter.\nObjetivo: evitar problemas de equals(), hashCode() e toString() em entidades JPA com relacionamentos."
+  },
+  {
+    "timestamp": "2026-06-18T04:37:00.930Z",
+    "source": "claude",
+    "git_branch": "main",
+    "git_user_name": "RafaelReis22",
+    "call_context": {
+      "cwd": "c:\\Users\\rafae\\Downloads\\Grupo3-Recommendation"
+    },
+    "role": "assistant",
+    "content": "Let me locate the entity files."
+  },
+  {
+    "timestamp": "2026-06-18T04:37:17.390Z",
+    "source": "claude",
+    "git_branch": "main",
+    "git_user_name": "RafaelReis22",
+    "call_context": {
+      "cwd": "c:\\Users\\rafae\\Downloads\\Grupo3-Recommendation"
+    },
+    "role": "assistant",
+    "content": "`@Data` substituído por `@Getter` + `@Setter` nas duas entidades. O import `lombok.*` já cobre os novos annotations, então nenhuma alteração de import é necessária. `equals()`, `hashCode()` e `toString()` não serão mais gerados automaticamente pelo Lombok, evitando os problemas clássicos com relacionamentos lazy do JPA."
   }
 ]
