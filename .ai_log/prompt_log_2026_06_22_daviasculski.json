@@ -1,0 +1,11 @@
+  {
+    "timestamp": "2026-06-22T16:29:05.543Z",
+    "source": "copilot",
+    "git_branch": "davi_adr",
+    "git_user_name": "daviasculski",
+    "call_context": {
+      "cwd": "c:\\Users\\daviasculski\\Documents\\Faculdade\\2026.1\\ENG_SOFT_II"
+    },
+    "role": "user",
+    "content": "Crie os ADRs restantes do projeto a partir das decisões arquiteturais já definidas. Gerar:* ADR-002 Redis Cache * ADR-003 REST vs Kafka* ADR-004 PostgreSQL vs Elasticsearch * ADR-005 Module Federation * ADR-006 Spring OAuth2 Resource Server Utilize um padrão profissional de ADR contendo:* Status contexto * Problema * Decisão* Justificativa Benefícios Riscos* Trade-offs* Alternativas Consideradas* Impacto Arquitetural* Consequências Futuras dcisões aprovadas:ADR-002* Redis com TTL de 10 minutos* Cache para GET /recommendations/user/{id}* Redução estimada de latência de ~100ms para ~1ms* Trade-off: eventual inconsistência temporáriaADR-003 * Comunicação síncrona via REST * Endpoint POST /evaluate* Não utilizaADR-004* PostgreSQL com índices e consultas ILIKE* Não utilizar Elasticsearch* Volume esperado inferior a 1000 registros* Trade-off: busca menos sofisticada em troca de simplicidad ADR-005* Module Federation utilizando @originjs/vite-plugin-federation* Integração com o Shell App do Grupo 7* Compartilhamento de React, React DOM e Material UI* Exposição do RecommendationView* Trade-off: maior acoplamento entre builds aDR06* spring-boot-starter-oauth2-resource-server* Validação JWT via JWKS* Integração nativa com Spring Security * Rotação automática de chaves* Trade-off: dependência do JWKS URI do serviço de autenticaçãoCriar os arquivos na pasta docs/adr e mostrar todos os arquivos gerados ao final. Reescreva o adr com base no que mandei acima E tambem sobre o microfrontned"
+  }
