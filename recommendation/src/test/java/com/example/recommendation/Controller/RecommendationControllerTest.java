@@ -1,4 +1,4 @@
-package com.example.recommendation.controller;
+package com.example.recommendation.Controller;
 
 import com.example.recommendation.dtos.AssessmentTriggerDTO;
 import com.example.recommendation.dtos.RecommendationDTO;

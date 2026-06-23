@@ -1,4 +1,4 @@
-package com.example.recommendation.service;
+package com.example.recommendation.Service;
 
 import com.example.recommendation.dtos.ResourceDTO;
 import com.example.recommendation.exception.ResourceNotFoundException;

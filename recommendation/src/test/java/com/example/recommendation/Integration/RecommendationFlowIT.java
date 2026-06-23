@@ -1,4 +1,4 @@
-package com.example.recommendation.integration;
+package com.example.recommendation.Integration;
 
 import com.example.recommendation.dtos.AssessmentTriggerDTO;
 import com.example.recommendation.dtos.ResourceDTO;

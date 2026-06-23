@@ -1,4 +1,4 @@
-package com.example.recommendation.exception;
+package com.example.recommendation.Exception;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;

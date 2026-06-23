@@ -1,4 +1,4 @@
-package com.example.recommendation.integration;
+package com.example.recommendation.Integration;
 
 import com.example.recommendation.service.CacheService;
 import org.junit.jupiter.api.AfterEach;
