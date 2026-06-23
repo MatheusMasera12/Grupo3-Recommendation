@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Import lazy do microfrontend remoto
 const LoginPage = lazy(() => import("mfe_auth/LoginPage"));
+const RecommendationView = lazy(() => import("mfe_recommendation/RecommendationView"));
+const ResourcePage = lazy(() => import("mfe_recommendation/ResourcePage"));
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("token");
@@ -41,6 +43,22 @@ export default function App() {
           />
           <Route
             path="/"
+            element={
+              <PrivateRoute>
+                <RecommendationView />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/resources"
+            element={
+              <PrivateRoute>
+                <ResourcePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/dashboard"
             element={
               <PrivateRoute>
                 <Dashboard />

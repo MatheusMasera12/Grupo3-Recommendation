@@ -48,7 +48,7 @@ Após subir a stack, os seguintes serviços estarão disponíveis:
 Como a base de dados do serviço de autenticação inicializa vazia, siga os passos abaixo para criar e acessar a conta de administrador:
 
 1. **Cadastre-se na aplicação:**
-   Acesse a página de cadastro do MFE de Autenticação ou vá diretamente em [http://localhost:3010/login](http://localhost:3010/login) e clique em **Criar conta**.
+   Acesse o MFE de Autenticação isolado em [http://localhost:4010/](http://localhost:4010/) e clique no botão **Cadastre-se** (logo abaixo do botão Entrar).
    * Cadastre um usuário (ex: `admin@email.com` com senha `Senha@12345`).
    * *A senha deve conter no mínimo 10 caracteres, ao menos 1 letra maiúscula, 1 letra minúscula, 1 número e 1 caractere especial.*
 
@@ -62,3 +62,38 @@ Como a base de dados do serviço de autenticação inicializa vazia, siga os pas
 
 3. **Pronto!**
    Agora você pode efetuar login com o e-mail e senha cadastrados no passo 1 e terá acesso completo às permissões administrativas de cadastro de recursos.
+
+---
+
+## 🧪 Como Testar na Prática
+
+Para garantir que tudo está funcionando de ponta a ponta, siga este fluxo:
+
+Existem duas formas de testar a aplicação, dependendo de como você deseja validar a integração:
+
+### Configuração Inicial do Banco de Dados (Obrigatório)
+Como o microserviço de autenticação do Grupo 7 não insere as permissões iniciais automaticamente, você **precisa** rodar este comando antes de tentar criar a primeira conta, senão o sistema dará erro de permissão não localizada:
+
+```bash
+docker exec -e PGPASSWORD=chave_secret postgres-recommendation psql -h ministack-rds-chave-auth-db -U chave -d chave_auth -c "INSERT INTO roles(name, description) VALUES ('geral', 'Role Geral'), ('admin', 'Role Admin') ON CONFLICT DO NOTHING;"
+```
+
+### Promovendo a Primeira Conta para Administrador
+Após criar a sua conta, ela terá a permissão comum. Para acessar as telas de cadastro de Recursos, rode o comando abaixo para virar Administrador (Role 2):
+
+```bash
+docker exec -e PGPASSWORD=chave_secret postgres-recommendation psql -h ministack-rds-chave-auth-db -U chave -d chave_auth -c "UPDATE users_roles SET id_role = 2 WHERE id_user = 1;"
+```
+
+### Opção A: Modo Integrado (Via Shell Host - Recomendado)
+Se você configurou a integração do Shell Host (adicionando os `remotes` do Recomendação), você pode testar o fluxo completo e unificado:
+1. **Acesso Principal:** Abra o **Shell Host** na raiz: [http://localhost:3010/](http://localhost:3010/).
+2. **Login / Cadastro:** Acesse [http://localhost:3010/login](http://localhost:3010/login) e cadastre sua conta. (Lembre-se de rodar o comando acima para virar Admin).
+3. **Cadastro de Recursos:** Logado no Shell, acesse a tela de Recursos em [http://localhost:3010/resources](http://localhost:3010/resources). Clique em adicionar e cadastre alguns conteúdos (cursos, vídeos, artigos).
+4. **Visualização:** Retorne para a tela principal de Recomendações em [http://localhost:3010/](http://localhost:3010/) e veja o seu catálogo preenchido!
+
+### Opção B: Modo Isolado (Apenas MFE de Recomendação)
+Se você quiser testar apenas as telas do Grupo 3 de forma independente (ambiente de desenvolvimento):
+1. **Login (MFE Auth):** Acesse [http://localhost:4010/](http://localhost:4010/) para criar sua conta (Cadastre-se) e logar, caso queira validar autenticação.
+2. **Cadastro de Recursos:** Acesse a tela de Recursos direto no MFE de Recomendação: [http://localhost:5173/resources](http://localhost:5173/resources). (O ambiente `dev` permite requisições abertas).
+3. **Visualização:** Volte para a tela principal de Recomendações em [http://localhost:5173/](http://localhost:5173/) e veja o seu catálogo sendo consumido pela API!

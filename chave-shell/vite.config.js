@@ -4,6 +4,8 @@ import federation from "@originjs/vite-plugin-federation";
 
 const MFE_AUTH_URL =
   process.env.MFE_AUTH_URL || "http://localhost:4001/assets/remoteEntry.js";
+const MFE_RECOMMENDATION_URL =
+  process.env.MFE_RECOMMENDATION_URL || "http://localhost:5173/assets/remoteEntry.js";
 
 export default defineConfig({
   plugins: [
@@ -13,6 +15,7 @@ export default defineConfig({
       remotes: {
         // O Shell consome o remoteEntry exposto pelo chave-mfe-auth
         mfe_auth: MFE_AUTH_URL,
+        mfe_recommendation: MFE_RECOMMENDATION_URL,
       },
       shared: ["react", "react-dom"],
     }),

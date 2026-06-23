@@ -11,6 +11,7 @@ export default defineConfig({
       filename: 'remoteEntry.js',
       exposes: {
         './RecommendationView': './src/pages/RecommendationView',
+        './ResourcePage': './src/pages/ResourcePage',
       },
       // singleton is a valid runtime option; cast bypasses incomplete type definitions
       shared: {

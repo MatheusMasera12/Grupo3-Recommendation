@@ -43,6 +43,9 @@ services:
       context: ../chave-ms-auth
       dockerfile: Dockerfile
     container_name: chave-ms-auth
+    # Contorno para o bug do Grupo 7: O Dockerfile deles não instala o TypeScript (omit=dev),
+    # então o npm start quebra. Injetamos o npm install aqui para garantir que o tsc exista.
+    command: sh -c "npm install && npm start"
     ports:
       - "${MS_AUTH_PORT:-3001}:3001"
     environment:
