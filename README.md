@@ -12,8 +12,8 @@ Rode os comandos abaixo para baixar a infraestrutura, o nosso microsserviço e o
 
 ```bash
 git clone https://github.com/MatheusMasera12/Grupo3-Recommendation.git
-git clone https://github.com/pucrs-sweii-2026-1-31/chave-ms-auth-g7.git
-git clone https://github.com/pucrs-sweii-2026-1-31/chave-mfe-auth-g7.git
+git clone https://github.com/pucrs-sweii-2026-1-31/chave-ms-auth-g7.git chave-ms-auth
+git clone https://github.com/pucrs-sweii-2026-1-31/chave-mfe-auth-g7.git chave-mfe-auth
 ```
 
 **2. Suba a Orquestra:**
