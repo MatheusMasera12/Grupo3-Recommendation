@@ -87,7 +87,7 @@ jobs:
 
       - name: Instalar dependências do MFE
         working-directory: recommendation-mfe
-        run: npm ci --no-audit
+        run: npm ci
 
       - name: Verificação de tipos TypeScript
         working-directory: recommendation-mfe

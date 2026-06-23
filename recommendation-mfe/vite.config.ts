@@ -15,8 +15,8 @@ export default defineConfig({
       },
       // singleton is a valid runtime option; cast bypasses incomplete type definitions
       shared: {
-        react: { singleton: true, requiredVersion: '^19.0.0' },
-        'react-dom': { singleton: true, requiredVersion: '^19.0.0' },
+        react: { singleton: true, requiredVersion: '^18.0.0' },
+        'react-dom': { singleton: true, requiredVersion: '^18.0.0' },
         'react-router-dom': { singleton: true, requiredVersion: '^6.0.0' },
         '@mui/material': { singleton: true, requiredVersion: '^6.0.0' },
         '@emotion/react': { singleton: true, requiredVersion: '^11.0.0' },

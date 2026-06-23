@@ -1,0 +1,112 @@
+{
+  "global": "RecommendationMfe",
+  "pkg": "@grupo3/recommendation-mfe",
+  "pkgDir": "/mnt/c/Users/rafae/Downloads/Grupo3-Recommendation/recommendation-mfe",
+  "extraEntries": [],
+  "exported": [
+    "Button",
+    "Card",
+    "DesignSystemProvider",
+    "Input",
+    "Navbar",
+    "RecommendationCard",
+    "ResourceForm",
+    "ResourceList",
+    "SearchBar",
+    "Sidebar",
+    "UserProfileCard"
+  ],
+  "storybookStatic": null,
+  "keyRecipe": 7,
+  "cfgSliceGlobal": "421cc18f087aa449b3f7ba050e8dc9500eef23186de2af0e43f3d8dca97b8e66",
+  "components": [
+    {
+      "name": "Button",
+      "group": "general",
+      "srcSha": null,
+      "sourceKey": "c6dec136e1ab9742",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "Card",
+      "group": "general",
+      "srcSha": null,
+      "sourceKey": "b2cbeb8fe22139cd",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "DesignSystemProvider",
+      "group": "general",
+      "srcSha": null,
+      "sourceKey": "0d0aba0f3f60a006",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "Input",
+      "group": "general",
+      "srcSha": null,
+      "sourceKey": "779cff8c3d9ca0ce",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "Navbar",
+      "group": "general",
+      "srcSha": null,
+      "sourceKey": "7a8e98b38fb4dfe6",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "RecommendationCard",
+      "group": "general",
+      "srcSha": null,
+      "sourceKey": "20d893f83da7eef8",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "ResourceForm",
+      "group": "general",
+      "srcSha": null,
+      "sourceKey": "68d9beeb9b54f016",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "ResourceList",
+      "group": "general",
+      "srcSha": null,
+      "sourceKey": "ed7dcd5e7f469701",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "SearchBar",
+      "group": "general",
+      "srcSha": null,
+      "sourceKey": "56ca37f178a0b786",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "Sidebar",
+      "group": "general",
+      "srcSha": null,
+      "sourceKey": "0803ca60e7e42ce6",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "UserProfileCard",
+      "group": "general",
+      "srcSha": null,
+      "sourceKey": "4de14da6cc055631",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    }
+  ]
+}

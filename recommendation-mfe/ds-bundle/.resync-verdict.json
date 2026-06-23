@@ -1,0 +1,80 @@
+{
+  "version": 2,
+  "ok": true,
+  "shape": "package",
+  "anchor": "not_provided",
+  "learningsUnmerged": [],
+  "stages": {
+    "build": {
+      "ok": true,
+      "exit": 0,
+      "skipped": null
+    },
+    "diff": {
+      "ok": true,
+      "exit": 0,
+      "skipped": null
+    },
+    "validate": {
+      "ok": true,
+      "exit": 0,
+      "skipped": null
+    },
+    "capture": {
+      "ok": true,
+      "exit": 0,
+      "skipped": null
+    }
+  },
+  "verification": {
+    "unchanged": [],
+    "changed": [],
+    "added": [
+      "Button",
+      "Card",
+      "DesignSystemProvider",
+      "Input",
+      "Navbar",
+      "RecommendationCard",
+      "ResourceForm",
+      "ResourceList",
+      "SearchBar",
+      "Sidebar",
+      "UserProfileCard"
+    ],
+    "removed": [],
+    "pendingGrade": [
+      "Button",
+      "Card",
+      "Input",
+      "Navbar",
+      "RecommendationCard",
+      "ResourceForm",
+      "ResourceList",
+      "SearchBar",
+      "Sidebar",
+      "UserProfileCard"
+    ],
+    "canary": null
+  },
+  "upload": {
+    "any": true,
+    "components": [
+      "Button",
+      "Card",
+      "DesignSystemProvider",
+      "Input",
+      "Navbar",
+      "RecommendationCard",
+      "ResourceForm",
+      "ResourceList",
+      "SearchBar",
+      "Sidebar",
+      "UserProfileCard"
+    ],
+    "deletePaths": [],
+    "bundle": true,
+    "styling": true,
+    "aux": true
+  }
+}

@@ -1,0 +1,13 @@
+export { DesignSystemProvider } from './components/DesignSystemProvider';
+export { Button } from './components/Button';
+export { Card } from './components/Card';
+export { Input } from './components/Input';
+export { SearchBar } from './components/SearchBar';
+export { Navbar } from './components/Navbar';
+export { Sidebar } from './components/Sidebar';
+export type { SidebarItem } from './components/Sidebar';
+export { RecommendationCard } from './components/RecommendationCard';
+export { UserProfileCard } from './components/UserProfileCard';
+export { ResourceForm } from './components/ResourceForm';
+export { ResourceList } from './components/ResourceList';
+export type { Resource, ResourceType, CreateResourceDto, UpdateResourceDto, Recommendation } from './types';

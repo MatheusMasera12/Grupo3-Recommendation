@@ -1,0 +1,43 @@
+{
+  "styleChanged": false,
+  "anchorUsed": false,
+  "anchorReason": "not_provided",
+  "keyedBy": "renderHashes",
+  "unchanged": [],
+  "changed": [],
+  "added": [
+    "Button",
+    "Card",
+    "DesignSystemProvider",
+    "Input",
+    "Navbar",
+    "RecommendationCard",
+    "ResourceForm",
+    "ResourceList",
+    "SearchBar",
+    "Sidebar",
+    "UserProfileCard"
+  ],
+  "removed": [],
+  "renderChurned": [],
+  "upload": {
+    "any": true,
+    "components": [
+      "Button",
+      "Card",
+      "DesignSystemProvider",
+      "Input",
+      "Navbar",
+      "RecommendationCard",
+      "ResourceForm",
+      "ResourceList",
+      "SearchBar",
+      "Sidebar",
+      "UserProfileCard"
+    ],
+    "deletePaths": [],
+    "bundle": true,
+    "styling": true,
+    "aux": true
+  }
+}

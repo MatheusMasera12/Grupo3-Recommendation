@@ -1,0 +1,18 @@
+[
+  {
+    "sheet": 1,
+    "components": [
+      "Button",
+      "Card",
+      "DesignSystemProvider",
+      "Input",
+      "Navbar",
+      "RecommendationCard",
+      "ResourceForm",
+      "ResourceList",
+      "SearchBar",
+      "Sidebar",
+      "UserProfileCard"
+    ]
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "namespace": "RecommendationMfe",
+  "source": "@grupo3/recommendation-mfe@1.0.0",
+  "shape": "package",
+  "provider": "DesignSystemProvider",
+  "componentCount": 11,
+  "skippedStoryIds": [],
+  "runtimeFontPrefixes": []
+}

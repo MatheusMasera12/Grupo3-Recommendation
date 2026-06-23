@@ -90,10 +90,10 @@ Se você configurou a integração do Shell Host (adicionando os `remotes` do Re
 1. **Acesso Principal:** Abra o **Shell Host** na raiz: [http://localhost:3010/](http://localhost:3010/).
 2. **Login / Cadastro:** Acesse [http://localhost:3010/login](http://localhost:3010/login) e cadastre sua conta. (Lembre-se de rodar o comando acima para virar Admin).
 3. **Cadastro de Recursos:** Logado no Shell, acesse a tela de Recursos em [http://localhost:3010/resources](http://localhost:3010/resources). Clique em adicionar e cadastre alguns conteúdos (cursos, vídeos, artigos).
-4. **Visualização:** Retorne para a tela principal de Recomendações em [http://localhost:3010/](http://localhost:3010/) e veja o seu catálogo preenchido!
-
+4. **Visualização do Catálogo vs. Recomendações:** A tela principal ([http://localhost:3010/](http://localhost:3010/)) exibe **Recomendações**, não o catálogo bruto. Para que um material apareça ali para o seu usuário, o sistema exige um "gatilho de avaliação".
+   * **Como testar:** Faça uma requisição `POST` para `http://localhost:8090/api/recommendations/evaluate` passando o seu `userId`, e o `competencyId` / `level` correspondentes ao material que você cadastrou. Depois disso, a recomendação aparecerá na sua tela inicial!
 ### Opção B: Modo Isolado (Apenas MFE de Recomendação)
 Se você quiser testar apenas as telas do Grupo 3 de forma independente (ambiente de desenvolvimento):
 1. **Login (MFE Auth):** Acesse [http://localhost:4010/](http://localhost:4010/) para criar sua conta (Cadastre-se) e logar, caso queira validar autenticação.
 2. **Cadastro de Recursos:** Acesse a tela de Recursos direto no MFE de Recomendação: [http://localhost:5173/resources](http://localhost:5173/resources). (O ambiente `dev` permite requisições abertas).
-3. **Visualização:** Volte para a tela principal de Recomendações em [http://localhost:5173/](http://localhost:5173/) e veja o seu catálogo sendo consumido pela API!
+3. **Visualização:** Retorne à tela inicial em [http://localhost:5173/](http://localhost:5173/). Lembre-se: os itens só aparecerão após disparar o gatilho de avaliação na API, conforme explicado no Passo 4 da Opção A.
