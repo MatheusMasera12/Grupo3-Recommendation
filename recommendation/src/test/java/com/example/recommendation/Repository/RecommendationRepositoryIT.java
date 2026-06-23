@@ -1,4 +1,4 @@
-package com.example.recommendation.Repository;
+package com.example.recommendation.repository;
 
 import com.example.recommendation.integration.AbstractIntegrationTest;
 import com.example.recommendation.model.Recommendation;

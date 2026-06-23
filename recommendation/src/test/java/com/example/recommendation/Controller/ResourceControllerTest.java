@@ -1,4 +1,4 @@
-package com.example.recommendation.Controller;
+package com.example.recommendation.controller;
 
 import com.example.recommendation.dtos.ResourceDTO;
 import com.example.recommendation.exception.ResourceNotFoundException;

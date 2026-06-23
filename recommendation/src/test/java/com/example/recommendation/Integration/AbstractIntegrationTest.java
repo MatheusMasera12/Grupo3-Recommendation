@@ -1,4 +1,4 @@
-package com.example.recommendation.Integration;
+package com.example.recommendation.integration;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;

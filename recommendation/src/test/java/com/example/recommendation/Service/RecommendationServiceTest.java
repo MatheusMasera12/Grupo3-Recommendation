@@ -1,4 +1,4 @@
-package com.example.recommendation.Service;
+package com.example.recommendation.service;
 
 import com.example.recommendation.dtos.AssessmentTriggerDTO;
 import com.example.recommendation.dtos.RecommendationDTO;
