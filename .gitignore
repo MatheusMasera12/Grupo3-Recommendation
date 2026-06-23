@@ -26,7 +26,7 @@ logs/
 .DS_Store
 Thumbs.db
 
-# Ignorando repositórios externos do Ministack
+# Ignorando repositÃ³rios externos do Ministack
 chave-ms-auth/
 chave-mfe-auth/
 
@@ -46,3 +46,4 @@ dist/*
 # Arquivos de lock e pastas do Terraform
 .terraform/
 .terraform.lock.hcl
+!.env.example
